@@ -50,22 +50,22 @@ if user in usernames and usernames[user] == password:
     print(line,"\n" "Welcome to the app,", user,"\n" "We have",text_count, "texts to be analyzed.")
     print(line)
 else:
-    print("Unregistered user, terminating the program...")
+    print("unregistered user, terminating the program..")
     quit()
 
 #Výběr textu uživatelem
-chosen_film = input("Enter a number btw 1 and " + str(text_count) + " to select: ")
+chosen_text = input("Enter a number btw 1 and " + str(text_count) + " to select: ")
 print(line)
 
-if chosen_film.isdigit():
-    chosen_film = int(chosen_film)
+if chosen_text.isdigit():
+    chosen_text = int(chosen_text)
 else:
     print("You can type only numbers")
     quit()
     
 
-if 0 < chosen_film <= text_count:
-    text = TEXTS[int(chosen_film)-1]
+if 0 < chosen_text <= text_count:
+    text = TEXTS[int(chosen_text)-1]
 else:
     print("Choose only btw 1 and " + str(text_count),"!")
     quit()
@@ -81,66 +81,51 @@ for word in raw_text:
 
 print("There are",len(clean_text), "words in the selected text.")
 
-title_words = {}
+title_words = []
+upper_words = []
+lower_words = []
+numbers = []
+
 
 for word in clean_text:
     if word.istitle():
-        if word in title_words:
-            title_words[word] += 1
-        else:
-            title_words[word] = 1
-
-print("There are",sum(title_words.values()),"titlecase words.")
-
-upper_words = {}
-
-for word in clean_text:
-    if word.isupper():
-        if word in upper_words:
-            upper_words[word] += 1
-        else:
-            upper_words[word] = 1
+        title_words.append(word)
+    elif word.isupper():
+        upper_words.append(word)
+    elif word.islower():
+        lower_words.append(word)
+    elif word.isdigit():
+        numbers.append(int(word))
 
 
-print("There are", sum(upper_words.values()), "uppercase words.")
+print("There are",len(title_words),"titlecase words.")
 
-lower_word = {}
+print("There are", len(upper_words), "uppercase words.")
 
-for word in clean_text:
-    if word.islower():
-        if word in lower_word:
-            lower_word[word] += 1
-        else:
-            lower_word[word] = 1
-
-
-print("There are", sum(lower_word.values()), "lowercase words.")
-
-numbers = []
-
-for number in clean_text:
-    if number.isdigit():
-        numbers.append(int(number))
+print("There are", len(lower_words), "lowercase words.")
     
 print("There are", len(numbers), "numeric strings.")    
+
 print("The sum of all the numbers",sum(numbers))
 print(line)
 
-print("len".upper() + "|", "occurences".upper(), "|" + "nr.".upper())
+print("len".upper() + "|", " occurences".upper(), " |" + "nr.".upper())
 print(line)
 
 #Délka slov, graf
 
-word_lenght = {}
+word_length = {}
 
 for word in clean_text:
-    lenght = len(word)
-    if lenght in word_lenght:
-        word_lenght[lenght] += 1
+    length = len(word)
+    if length in word_length:
+        word_length[length] += 1
     else:
-        word_lenght[lenght] = 1
+        word_length[length] = 1
 
+#Zarovnání podle největší hodnoty 
+max_length = max(word_length.values())
 
-for lenght in sorted(word_lenght):
-    print(f" {lenght:>2}| {("*" * word_lenght[lenght]):<15} |{word_lenght[lenght]:<2}")
+for length in sorted(word_length):
+    print(f" {length:>2}|{("*" * word_length[length]):<{max_length}} |{word_length[length]:<2}")
 
